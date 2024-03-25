@@ -26,7 +26,7 @@ const signupSchema = Joi.object({
 		"any.required": "Password required",
 		"string.empty": "Password do not empty",
 	}),
-	confirmPassword: Joi.string().required().valid(Joi.ref("password")).messages({
+	confirmpassword: Joi.string().required().valid(Joi.ref("password")).messages({
 		"any.required": "Password required",
 		"any.only": "Password not match",
 	}),

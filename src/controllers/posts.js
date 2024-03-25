@@ -59,8 +59,9 @@ const updatePost = async (req, res) => {
 				message: errs,
 			});
 		}
+		const post = await PostModel.findOne({ _id: req.params.id });
 		const isExist = await PostModel.findOne({ title: req.body.title });
-		if (isExist) {
+		if (isExist && post.title !== req.body.title) {
 			return res.status(401).json({
 				message: `This post ${req.body.title} already exists`,
 			});

@@ -1,4 +1,4 @@
-import { signinSchema } from "../schemas/auth";
+import { signinSchema, signupSchema } from "../schemas/auth";
 import UserModel from "../models/user.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -9,19 +9,19 @@ const signin = async (req, res) => {
 		const { error } = signinSchema.validate(req.body, { abortEarly: false });
 		if (error) {
 			const err = error.details.map((e) => e.message);
-			res.status(400).json({
+			return res.status(400).json({
 				message: err,
 			});
 		}
 		const isExist = await UserModel.findOne({ email: email });
 		if (!isExist) {
-			res.status(400).json({
+			return res.status(400).json({
 				message: "User does not exist",
 			});
 		}
 		const checkPassword = await bcrypt.compare(password, isExist.password);
 		if (!checkPassword) {
-			res.status(400).json({
+			return res.status(400).json({
 				message: "Wrong password",
 			});
 		}
@@ -42,13 +42,13 @@ const signup = async (req, res) => {
 		const { error } = signupSchema.validate(req.body, { abortEarly: false });
 		if (error) {
 			const err = error.details.map((e) => e.message);
-			res.status(401).json({
+			return res.status(401).json({
 				message: err,
 			});
 		}
 		const isExist = await UserModel.findOne({ email: email });
 		if (isExist) {
-			res.status(401).json({
+			return res.status(401).json({
 				message: "User already exists",
 			});
 		}
